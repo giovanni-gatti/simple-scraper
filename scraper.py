@@ -6,6 +6,10 @@ from datetime import datetime
 import re 
 import os 
 import pandas as pd
+
+####### Test push ###########
+print("lo vedi")
+
 folders = ["/data/autos","/data/visited"]
 for folder in folders:
     print(os.path.isdir(os.getcwd() + folder))
