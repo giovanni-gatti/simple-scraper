@@ -8,9 +8,6 @@ import re
 import os 
 import pandas as pd
 
-####### Test push ###########
-print("lo vedi")
-
 folders = ["/data/autos","/data/visited"]
 for folder in folders:
     print(os.path.isdir(os.getcwd() + folder))
@@ -96,17 +93,18 @@ while True:
                     #car_dict["place"] = car.find("div",attrs={"class":"sc-grid-col-12",
                     #                                       "data-item-name":"vendor-contact-city"}).text
                     
-                    car_dict["price"] =  "".join(re.findall(r'[0-9]+',car.find("div",attrs={"class":"cldt-price"}).text))
+                    #price has the updated html tag which should be working
+                    car_dict["price"] =  "".join(re.findall(r'[0-9]+',car.find("div",attrs={"class":"PriceInfo_styledPriceRow__2fvRD"}).text))
                     
-                    equipment = []
-                    for i in car.find_all("div",attrs={"class":"cldt-equipment-block sc-grid-col-3 sc-grid-col-m-4 sc-grid-col-s-12 sc-pull-left"}):
-                        for span in i.find_all("span"):
-                            equipment.append(i.text)
-                    equipment2 = []
-                    for element in list(set(equipment)):
-                        equipment_list = element.split("\n")
-                        equipment2.extend(equipment_list)
-                    car_dict["equipment_list"] = sorted(list(set(equipment2)))
+                    # equipment = []
+                    # for i in car.find_all("div",attrs={"class":"cldt-equipment-block sc-grid-col-3 sc-grid-col-m-4 sc-grid-col-s-12 sc-pull-left"}):
+                    #     for span in i.find_all("span"):
+                    #         equipment.append(i.text)
+                    # equipment2 = []
+                    # for element in list(set(equipment)):
+                    #     equipment_list = element.split("\n")
+                    #     equipment2.extend(equipment_list)
+                    # car_dict["equipment_list"] = sorted(list(set(equipment2)))
                     multiple_cars_dict[URL] = car_dict
                     visited_urls.append(URL)
                 except Exception as e:
