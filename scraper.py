@@ -65,12 +65,12 @@ while True:
                     
                     for key, value in zip(car.find_all("dt"),car.find_all("dd")):
                         car_dict[key.text.replace("\n","")] = value.text.replace("\n","")
-                    car_dict["dealer"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
-                                                                 "data-vendor-type":"dealer"}) != None
-                    car_dict["private"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
-                                                               "data-vendor-type":"privateseller"}) != None
-                    car_dict["place"] = car.find("div",attrs={"class":"sc-grid-col-12",
-                                                           "data-item-name":"vendor-contact-city"}).text
+                    #car_dict["dealer"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
+                    #                                             "data-vendor-type":"dealer"}) != None
+                    #car_dict["private"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
+                    #                                           "data-vendor-type":"privateseller"}) != None
+                    #car_dict["place"] = car.find("div",attrs={"class":"sc-grid-col-12",
+                    #                                       "data-item-name":"vendor-contact-city"}).text
                     
                     car_dict["price"] =  "".join(re.findall(r'[0-9]+',car.find("div",attrs={"class":"cldt-price"}).text))
                     
@@ -89,7 +89,7 @@ while True:
                     print("\n\n Detail Page: " + str(e) + " "*50)
                     pass
             print("")
-        
+            
         else:
             print("\U0001F634")
             sleep(60)
