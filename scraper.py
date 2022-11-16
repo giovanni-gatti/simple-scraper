@@ -3,6 +3,7 @@ import urllib.request
 from time import sleep
 import json 
 from datetime import datetime 
+from requests import get
 import re 
 import os 
 import pandas as pd
@@ -31,6 +32,18 @@ countries = {"Italy": "I",
              "France": "F",
              "Luxemburg": "L",
              "Netherlands": "NL"}
+
+
+page = get("https://www.autoscout24.it")
+soup1 = BeautifulSoup(page.text,"lxml")
+options = soup1.find("select",{"name":"make"}).findAll("option")
+
+brands = []
+
+for i in options:
+    brands.append(i.text)
+
+brands.pop(0)
 
 car_counter=1
 cycle_counter=0
