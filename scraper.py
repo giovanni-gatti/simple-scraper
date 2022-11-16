@@ -83,7 +83,7 @@ while True:
                     #     equipment_list = element.split("\n")
                     #     equipment2.extend(equipment_list)
                     # car_dict["equipment_list"] = sorted(list(set(equipment2)))
-                    
+
                     multiple_cars_dict[URL] = car_dict
                     visited_urls.append(URL)
                 except Exception as e:
@@ -97,7 +97,10 @@ while True:
     
     if len(multiple_cars_dict)>0:
         df = pd.DataFrame(multiple_cars_dict).T
-        df.to_csv("data/autos/"+re.sub("[.,:,-, ]","_",str(datetime.now()))+".csv",sep=";",index_label="url")
+        df.to_csv("data/autos/"+re.sub("[.,:,-, ]","_",str(datetime.now()))+".csv",sep=",",index_label="url")
+        print(df)
+        print(df.shape)
+        print(df.size)
     else:
         print("No Data\n\n")
     with open("data/visited/visited_urls.json", "w") as file:
