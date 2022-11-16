@@ -23,7 +23,14 @@ path_to_visited_urls = "data/visited/visited_urls.json"
 if not os.path.isfile(path_to_visited_urls):
     with open(path_to_visited_urls,"w") as file:
         json.dump([],file)
-countries = {"Italien": "I"}
+countries = {"Italy": "I",
+             "Germany": "D",
+             "Austria": "A",
+             "Belgium" : "B",
+             "Spain": "E",
+             "France": "F",
+             "Luxemburg": "L",
+             "Netherlands": "NL"}
 
 car_counter=1
 cycle_counter=0
