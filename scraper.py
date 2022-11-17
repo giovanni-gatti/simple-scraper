@@ -56,33 +56,28 @@ while True:
         if len(car_URLs_unique)>0:
             for URL in car_URLs_unique:
                 print(f'Run {cycle_counter} | {country} | Auto {car_counter}'+' '*50, end="\r")
+                # print(URL)
                 try:
                     car_counter+=1
                     car_dict = {}
                     car_dict["country"] = country
                     car_dict["date"] = str(datetime.now())                    
                     car = BeautifulSoup(urllib.request.urlopen('https://www.autoscout24.it'+URL).read(),'lxml')
+
+                    test_car = BeautifulSoup(urllib.request.urlopen('https://www.autoscout24.it'+URL), 'html.parser')
+                    images = test_car.find_all('img')
+                    images = [image['src'] for image in images]
+                    images = [image for image in images if image[0:5] == 'https'and image[-3:] == 'jpg']
+                    images = [image.rsplit('/', 1) for image in images]
+                    images = [image[0] for image in images]
+                    n_images = len(images)
+
+                    car_dict["image_list"] = images
+                    car_dict["n_images"] = n_images                    
+                    car_dict["locat"] = car.find("a",attrs={"class":"scr-link LocationWithPin_locationItem__pHhCa"}).text
                     
                     for key, value in zip(car.find_all("dt"),car.find_all("dd")):
                         car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
-
-                    car_dict["location"] = car.find("a",attrs={"class":"scr-link LocationWithPin_locationItem__pHhCa"}).text
-
-                    # car_dict["dealer"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
-                    #                                              "data-vendor-type":"dealer"}) != None
-                    # car_dict["private"] = car.find("div",attrs={"class":"cldt-vendor-contact-box",
-                    #                                            "data-vendor-type":"privateseller"}) != None
-                    # car_dict["price"] =  "".join(re.findall(r'[0-9]+',car.find("div",attrs={"class":"PriceInfo_styledPriceRow__2fvRD"}).text))
-                    
-                    # equipment = []
-                    # for i in car.find_all("div",attrs={"class":"cldt-equipment-block sc-grid-col-3 sc-grid-col-m-4 sc-grid-col-s-12 sc-pull-left"}):
-                    #     for span in i.find_all("span"):
-                    #         equipment.append(i.text)
-                    # equipment2 = []
-                    # for element in list(set(equipment)):
-                    #     equipment_list = element.split("\n")
-                    #     equipment2.extend(equipment_list)
-                    # car_dict["equipment_list"] = sorted(list(set(equipment2)))
 
                     multiple_cars_dict[URL] = car_dict
                     visited_urls.append(URL)
@@ -98,7 +93,6 @@ while True:
     if len(multiple_cars_dict)>0:
         df = pd.DataFrame(multiple_cars_dict).T
         df.to_csv("data/autos/"+re.sub("[.,:,-, ]","_",str(datetime.now()))+".csv",sep=",",index_label="url")
-        print(df)
         print(df.shape)
         print(df.size)
     else:
