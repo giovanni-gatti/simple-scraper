@@ -90,7 +90,14 @@ while True:
                     car_dict["locat"] = car.find("a",attrs={"class":"scr-link LocationWithPin_locationItem__pHhCa"}).text
                     
                     for key, value in zip(car.find_all("dt"),car.find_all("dd")):
-                        car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
+                        if key.text == "Consumo di carburante":
+                            valore = value.text.replace(")", "), ")
+                            consumi = valore.split(", ", 2)
+                            print(consumi[:len(consumi)])
+                            car_dict[key.text.replace("\n","")] = valore
+                        else:
+                            car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
+
 
                     multiple_cars_dict[URL] = car_dict
                     visited_urls.append(URL)
