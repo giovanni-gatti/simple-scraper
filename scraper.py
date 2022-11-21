@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup, SoupStrainer
+from requests import get
 import urllib.request
 from time import sleep
 import json 
@@ -20,6 +21,18 @@ if not os.path.isfile(path_to_visited_urls):
     with open(path_to_visited_urls,"w") as file:
         json.dump([],file)
 countries = {"Italy": "I"}
+
+page = get("https://www.autoscout24.it")
+soup1 = BeautifulSoup(page.text,"lxml")
+options = soup1.find("select",{"name":"make"}).findAll("option")
+
+brands = []
+
+for i in options:
+    brands.append(i.text)
+
+brands.pop(0)
+print(brands)
 
 car_counter=1
 cycle_counter=0
@@ -93,6 +106,7 @@ while True:
     if len(multiple_cars_dict)>0:
         df = pd.DataFrame(multiple_cars_dict).T
         df.to_csv("data/autos/"+re.sub("[.,:,-, ]","_",str(datetime.now()))+".csv",sep=",",index_label="url")
+        print(df)
         print(df.shape)
         print(df.size)
     else:
