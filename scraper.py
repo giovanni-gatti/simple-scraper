@@ -86,16 +86,20 @@ while True:
                     car_dict["image_list"] = images
                     car_dict["n_images"] = n_images                    
                     car_dict["locat"] = car.find("a",attrs={"class":"scr-link LocationWithPin_locationItem__pHhCa"}).text
-                    
+                    car_dict["c1"] = None
+                    car_dict["c2"] = None
+                    car_dict["c3"] = None
+
                     for key, value in zip(car.find_all("dt"),car.find_all("dd")):
                         if key.text == "Consumo di carburante":
-                            valore = value.text.replace(")", "), ")
-                            consumi = valore.split(", ", 2)
-                            print(consumi[:len(consumi)])
-                            car_dict[key.text.replace("\n","")] = valore
+                            c = ["c1", "c2", "c3"]
+                            valore = value.text.replace(")", " l/100 km")
+                            consumi = re.split(" l/100 km", valore)
+                            for i in range(0,len(consumi) - 1):
+                                if (i % 2) == 0:
+                                    car_dict[c[i//2]] = consumi[i]  
                         else:
-                            car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n","").replace("€", ""))
-
+                            car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
 
                     multiple_cars_dict[URL] = car_dict
                     visited_urls.append(URL)
