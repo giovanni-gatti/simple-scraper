@@ -30,9 +30,7 @@ brands = []
 
 for i in options:
     brands.append(i.text)
-
 brands.pop(0)
-print(brands)
 
 car_counter=1
 cycle_counter=0
@@ -46,7 +44,7 @@ while True:
     multiple_cars_dict = {}
     
     cycle_counter+=1
-    for country in countries:
+    for maker in brands:
         
         car_URLs = []
         
@@ -64,16 +62,16 @@ while True:
                     car_URLs.append(link.get("href"))
             car_URLs_unique = [car for car in list(set(car_URLs)) if car not in visited_urls]
             
-            print(f'Run {cycle_counter} | {country} | Page {page} | {len(car_URLs_unique)} new URLs', end="\r")
+            print(f'Run {cycle_counter} | {maker} | Page {page} | {len(car_URLs_unique)} new URLs', end="\r")
         print("")
         if len(car_URLs_unique)>0:
             for URL in car_URLs_unique:
-                print(f'Run {cycle_counter} | {country} | Auto {car_counter}'+' '*50, end="\r")
+                print(f'Run {cycle_counter} | {maker} | Auto {car_counter}'+' '*50, end="\r")
                 # print(URL)
                 try:
                     car_counter+=1
                     car_dict = {}
-                    car_dict["country"] = country
+                    car_dict["maker"] = maker
                     car_dict["date"] = str(datetime.now())                    
                     car = BeautifulSoup(urllib.request.urlopen('https://www.autoscout24.it'+URL).read(),'lxml')
 
@@ -96,7 +94,7 @@ while True:
                             print(consumi[:len(consumi)])
                             car_dict[key.text.replace("\n","")] = valore
                         else:
-                            car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
+                            car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n","").replace("€", ""))
 
 
                     multiple_cars_dict[URL] = car_dict
