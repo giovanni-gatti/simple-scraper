@@ -50,7 +50,8 @@ while True:
         
         for page in range(1,21):
             try:
-                url = 'https://www.autoscout24.it/lst/'+ maker +'?sort=age&desc=1&cy=I&atype=C&ustate=N%2CU&powertype=kw&page='+str(page)
+                maker_link = maker.replace(' ', '-').lower()
+                url = 'https://www.autoscout24.it/lst/'+ maker_link +'?sort=age&desc=1&cy=I&atype=C&ustate=N%2CU&powertype=kw&page='+str(page)
                 only_a_tags = SoupStrainer("a")
                 soup = BeautifulSoup(urllib.request.urlopen(url).read(),'lxml', parse_only=only_a_tags)
             except Exception as e:
