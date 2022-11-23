@@ -15,6 +15,8 @@ for folder in folders:
     else:
         print(folder,"already exists")
 
+optionals = ["Intrattenimento / Media", "Sicurezza", "Extra", "Comfort"]
+
 path_to_visited_urls = "data/visited/visited_urls.json"
 
 if not os.path.isfile(path_to_visited_urls):
@@ -44,7 +46,7 @@ while True:
     multiple_cars_dict = {}
     
     cycle_counter+=1
-    for maker in brands[0:1]:
+    for maker in brands[2:3]:
         
         car_URLs = []
         
@@ -100,25 +102,14 @@ while True:
                                 if (i % 2) == 0:
                                     car_dict[c[i//2]] = consumi[i]  
                         
-                        elif key.text == "Intrattenimento / Media":
+                        elif key.text in optionals:
                             stringa = str(value)
                             regex = "<li>(.*?)</li>"
                             car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
-
-                        elif key.text == "Sicurezza":
-                            stringa = str(value)
-                            regex = "<li>(.*?)</li>"
-                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
-
-                        elif key.text == "Extra":
-                            stringa = str(value)
-                            regex = "<li>(.*?)</li>"
-                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
-
-                        elif key.text == "Comfort":
-                            stringa = str(value)
-                            regex = "<li>(.*?)</li>"
-                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
+                            numberof = "number_" + key.text.replace("\n","")
+                            car_dict[numberof] = len(car_dict[key.text.replace("\n","")])
+                            stacker = {k: True for k in car_dict[key.text.replace("\n","")]}
+                            car_dict = car_dict | stacker
                         
                         else:
                             car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
@@ -132,7 +123,7 @@ while True:
         
         else:
             print("\U0001F634")
-            sleep(60)
+            sleep(10)
     
     if len(multiple_cars_dict)>0:
         df = pd.DataFrame(multiple_cars_dict).T
