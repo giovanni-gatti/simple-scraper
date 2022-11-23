@@ -104,6 +104,21 @@ while True:
                             stringa = str(value)
                             regex = "<li>(.*?)</li>"
                             car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
+
+                        elif key.text == "Sicurezza":
+                            stringa = str(value)
+                            regex = "<li>(.*?)</li>"
+                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
+
+                        elif key.text == "Extra":
+                            stringa = str(value)
+                            regex = "<li>(.*?)</li>"
+                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
+
+                        elif key.text == "Comfort":
+                            stringa = str(value)
+                            regex = "<li>(.*?)</li>"
+                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
                         
                         else:
                             car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
