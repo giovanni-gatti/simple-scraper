@@ -44,7 +44,7 @@ while True:
     multiple_cars_dict = {}
     
     cycle_counter+=1
-    for maker in brands:
+    for maker in brands[0:1]:
         
         car_URLs = []
         
@@ -99,6 +99,12 @@ while True:
                             for i in range(0,len(consumi) - 1):
                                 if (i % 2) == 0:
                                     car_dict[c[i//2]] = consumi[i]  
+                        
+                        elif key.text == "Intrattenimento / Media":
+                            stringa = str(value)
+                            regex = "<li>(.*?)</li>"
+                            car_dict[key.text.replace("\n","")] = re.findall(regex, stringa)
+                        
                         else:
                             car_dict[key.text.replace("\n","")] = re.sub(r"(\w)([A-Z])", r"\1 \2", value.text.replace("\n",""))
 
