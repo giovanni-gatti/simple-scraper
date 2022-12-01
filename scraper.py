@@ -93,6 +93,9 @@ while True:
                     car_dict["c2"] = None
                     car_dict["c3"] = None
 
+                    # questa riga prende esplicitamente il tag prezzo
+                    car_dict["price_tag"] =  "".join(re.findall(r'^(.+?),',car.find("div",attrs={"class":"PriceInfo_styledPriceRow__2fvRD"}).text))
+
                     for key, value in zip(car.find_all("dt"),car.find_all("dd")):
                         if key.text == "Consumo di carburante":
                             c = ["c1", "c2", "c3"]
